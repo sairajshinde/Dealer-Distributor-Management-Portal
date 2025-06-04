@@ -1,0 +1,343 @@
+** API Documentation dealer and distributor Management system **
+
+---
+
+### Authentication
+
+#### Signup
+
+* **Method:** POST
+* **Endpoint:** `/auth/signup`
+* **Body (JSON):**
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "yourPassword",
+  "role": "distributor"
+}
+```
+
+* **Expected Response:**
+
+```json
+{
+  "message": "Signup successful, pending approval"
+}
+```
+
+#### Login
+
+* **Method:** POST
+* **Endpoint:** `/auth/login`
+* **Body (JSON):**
+
+```json
+{
+  "email": "john@example.com",
+  "password": "yourPassword"
+}
+```
+
+* **Expected Response:**
+
+```json
+{
+  "token": "JWT_TOKEN",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "role": "distributor"
+  }
+}
+```
+
+---
+
+### Dashboard
+
+#### Get Dashboard Stats
+
+* **Method:** GET
+* **Endpoint:** `/dashboard/stats`
+* **Headers:** `Authorization: Bearer JWT_TOKEN`
+* **Expected Response:**
+
+```json
+{
+  "totalProducts": 10,
+  "lowStockProducts": [ ... ],
+  "totalOrders": 25,
+  "totalRevenue": 3000.50,
+  "monthlySales": [ ... ],
+  "topSellingProducts": [ ... ]
+}
+```
+
+---
+
+### Inventory Management
+
+#### Create Inventory Item
+
+* **Method:** POST
+* **Endpoint:** `/inventory`
+* **Body (JSON):**
+
+```json
+{
+  "productName": "Product A",
+  "description": "Test description",
+  "quantity": 100,
+  "price": 15.5
+}
+```
+
+* **Expected Response:**
+
+```json
+{
+  "id": 1,
+  "productName": "Product A",
+  "description": "Test description",
+  "quantity": 100,
+  "price": 15.5
+}
+```
+
+#### Get Inventory Items
+
+* **Method:** GET
+* **Endpoint:** `/inventory`
+* **Expected Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "productName": "Product A",
+    "description": "Test description",
+    "quantity": 100,
+    "price": 15.5
+  }
+]
+```
+
+#### Update Inventory Item
+
+* **Method:** PUT
+* **Endpoint:** `/inventory/:id`
+* **Body (JSON):**
+
+```json
+{
+  "quantity": 150,
+  "price": 10.99
+}
+```
+
+* **Expected Response:**
+
+```json
+{
+  "message": "Item updated",
+  "updated": [1]
+}
+```
+
+#### Delete Inventory Item
+
+* **Method:** DELETE
+* **Endpoint:** `/inventory/:id`
+* **Expected Response:**
+
+```json
+{
+  "message": "Item deleted"
+}
+```
+
+---
+
+### Order Management
+
+#### Create Order
+
+* **Method:** POST
+* **Endpoint:** `/orders`
+* **Body (JSON):**
+
+```json
+{
+  "orderNumber": "ORD-001",
+  "items": [
+    { "name": "Product A", "quantity": 2 }
+  ],
+  "totalAmount": 31
+}
+```
+
+* **Expected Response:**
+
+```json
+{
+  "id": 1,
+  "orderNumber": "ORD-001",
+  "userId": 1,
+  "items": [
+    { "name": "Product A", "quantity": 2 }
+  ],
+  "totalAmount": 31
+}
+```
+
+#### Get Orders
+
+* **Method:** GET
+* **Endpoint:** `/orders`
+* **Expected Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "orderNumber": "ORD-001",
+    "userId": 1,
+    "items": [
+      { "name": "Product A", "quantity": 2 }
+    ],
+    "totalAmount": 31
+  }
+]
+```
+
+#### Update Order
+
+* **Method:** PUT
+* **Endpoint:** `/orders/:id`
+* **Body (JSON):**
+
+```json
+{
+  "status": "approved"
+}
+```
+
+* **Expected Response:**
+
+```json
+{
+  "message": "Order updated",
+  "updated": [1]
+}
+```
+
+#### Cancel Order
+
+* **Method:** PATCH
+* **Endpoint:** `/orders/:id/cancel`
+* **Expected Response:**
+
+```json
+{
+  "message": "Order cancelled"
+}
+```
+
+---
+
+### Document Upload
+
+#### Upload Document
+
+* **Method:** POST
+* **Endpoint:** `/upload`
+* **Headers:** `Authorization: Bearer JWT_TOKEN`
+* **Body (form-data):**
+
+  * `file`: (binary file)
+  * `productId`: 1
+* **Expected Response:**
+
+```json
+{
+  "message": "File uploaded successfully",
+  "document": {
+    "productId": 1,
+    "filename": "file123.pdf",
+    "originalName": "brochure.pdf",
+    "fileType": "application/pdf",
+    "uploadedBy": "admin"
+  }
+}
+```
+
+#### Get Documents by Product
+
+* **Method:** GET
+* **Endpoint:** `/upload/:productId`
+* **Expected Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "productId": 1,
+    "filename": "file123.pdf",
+    "originalName": "brochure.pdf",
+    "fileType": "application/pdf"
+  }
+]
+```
+
+---
+
+### User Management
+
+#### Get Pending Users
+
+* **Method:** GET
+* **Endpoint:** `/users/pending`
+* **Headers:** `Authorization: Bearer JWT_TOKEN`
+* **Expected Response:**
+
+```json
+[
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "role": "dealer",
+    "status": "pending"
+  }
+]
+```
+
+#### Approve User
+
+* **Method:** PUT
+* **Endpoint:** `/users/approve/:id`
+* **Expected Response:**
+
+```json
+{
+  "message": "User approved"
+}
+```
+
+#### Delete User
+
+* **Method:** DELETE
+* **Endpoint:** `/users/:id`
+* **Expected Response:**
+
+```json
+{
+  "message": "User deleted"
+}
+```
+
+---
+
+*End of API Documentation*

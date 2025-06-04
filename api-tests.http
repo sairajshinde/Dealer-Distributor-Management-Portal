@@ -1,0 +1,36 @@
+### Signup a new Dealer (pending approval)
+POST http://localhost:4000/api/signup
+Content-Type: application/json
+
+{
+  "name": "Dealer One",
+  "email": "dealer1@example.com",
+  "password": "test123",
+  "role": "dealer"
+}
+
+### Login (after approval)
+POST http://localhost:4000/api/login
+Content-Type: application/json
+
+{
+  "email": "dealer1@example.com",
+  "password": "test123"
+}
+
+### Admin Login
+POST http://localhost:4000/api/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+### Get all pending users (ADMIN ONLY)
+GET http://localhost:4000/api/users/pending
+Authorization: {{ADMIN_JWT_TOKEN}}
+
+### Approve a user (replace :id with actual user ID)
+PATCH http://localhost:4000/api/users/USER_ID_HERE/approve
+Authorization: {{ADMIN_JWT_TOKEN}}
