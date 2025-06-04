@@ -51,7 +51,7 @@ http://localhost:4000/api-docs
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/Dealer-Distributor-Management-Portal.git
+git clone https://github.com/sairajshinde/Dealer-Distributor-Management-Portal.git
 cd Dealer-Distributor-Management-Portal
 ```
 
